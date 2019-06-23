@@ -1,6 +1,8 @@
 #include <sstream>
 #include <fstream>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include "Shader.h"
 
 Shader::Shader() {
@@ -73,6 +75,12 @@ void Shader::UploadTexture(Texture* tex, const char* name, GLuint unit) {
 	glUniform1i(samplerLoc, unit);
 
 	//printf("Uploaded texture to %d\n", samplerLoc);
+}
+
+void Shader::UploadMatrix(glm::mat4* mat, const char* name) {
+	Activate();
+	GLuint matLoc = glGetUniformLocation(program, name);
+	glUniformMatrix4fv(matLoc, 1, GL_FALSE, glm::value_ptr(*mat));
 }
 
 std::string Shader::ReadFile(const char* filename) {

@@ -6,11 +6,13 @@
 #pragma comment(lib, "SDL2main.lib")
 #endif
 
+#include <vector>
+
 #include <SDL2/SDL.h>
 
 #include "VertexArray.h"
 #include "Shader.h"
-#include "Texture.h"
+#include "Sprite.h"
 
 class Renderer {
 public:
@@ -20,15 +22,16 @@ public:
 	bool Init(int w, int h);
 	void Draw();
 
+	Shader& GetShader() { return shader; };
+	void AddSprite(Sprite* sprite);
+
 private:
 	SDL_Window* window;
 	SDL_GLContext context;
 
 	int width, height;
 
-	//DEBUG
-	VertexArray vertexarray;
 	Shader shader;
-	Texture tex;
+	std::vector<Sprite*> sprites;
 };
 

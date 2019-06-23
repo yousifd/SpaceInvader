@@ -1,9 +1,8 @@
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "Renderer.h"
-#include "VertexArray.h"
-#include "Shader.h"
-#include "Sprite.h"
 
 Renderer::Renderer() {
 }
@@ -48,9 +47,12 @@ bool Renderer::Init(int w, int h) {
 		return false;
 	}
 
-	// DEBUGING
-	Sprite sprite;
-	sprite.Init("ship.png", &shader);
+	// TODO: Move to Camera/Game
+	glm::mat4 view = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, -3.f));
+	glm::mat4 proj = glm::ortho(-2.f, 2.f, -1.f, 1.f, -1.f, 100.f);
+
+	shader.UploadMatrix(&view, "view");
+	shader.UploadMatrix(&proj, "proj");
 
 	return true;
 }
@@ -59,8 +61,13 @@ void Renderer::Draw() {
 	glClearColor(.5f, .5f, .5f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-
-	glDrawElements(GL_TRIANGLES, vertexarray.GetIndexCount(), GL_UNSIGNED_INT, nullptr);
+	for (Sprite* sprite : sprites) {
+		sprite->Draw();
+	}
 
 	SDL_GL_SwapWindow(window);
+}
+
+void Renderer::AddSprite(Sprite* sprite) {
+	sprites.push_back(sprite);
 }

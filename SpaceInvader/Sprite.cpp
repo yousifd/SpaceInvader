@@ -6,7 +6,10 @@ Sprite::Sprite() {
 Sprite::~Sprite() {
 }
 
-bool Sprite::Init(const char* filename, Shader* _shader) {
+bool Sprite::Init(const char* filename, Shader* _shader, Actor* _owner) {
+	shader = _shader;
+	owner = _owner;
+
 	Vertex vertices[] = { Vertex(-.5, .5, 0., 1., 0., 0., 1., 1., 0.), // top left
 		Vertex(.5, .5, 0., 0., 1., 0., 1., 0., 0.), // top right
 		Vertex(-.5, -.5, .0, 0., 0., 1., 1., 1., 1.), // bottom left
@@ -27,13 +30,13 @@ bool Sprite::Init(const char* filename, Shader* _shader) {
 		return false;
 	}
 
-	shader = _shader;
-
 	return true;
 }
 
 void Sprite::Draw() {
+	shader->UploadMatrix(&owner->GetModel(), "model");
 	shader->UploadTexture(&tex, "tex", GL_TEXTURE0);
 	shader->Activate();
 	verts.Activate();
+	glDrawElements(GL_TRIANGLES, verts.GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 }
