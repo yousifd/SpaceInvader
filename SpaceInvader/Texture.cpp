@@ -30,6 +30,8 @@ bool Texture::Init(const char* filename) {
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	//printf("Width: %d\nHeight: %d\n", width, height);
+
 	return true;
 }
 

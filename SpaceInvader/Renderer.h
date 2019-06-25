@@ -13,6 +13,7 @@
 #include "VertexArray.h"
 #include "Shader.h"
 #include "Sprite.h"
+#include "VertexArray.h"
 
 class Renderer {
 public:
@@ -24,14 +25,16 @@ public:
 
 	Shader& GetShader() { return shader; };
 	void AddSprite(Sprite* sprite);
+	void RemoveSprite(Sprite* sprite);
+
+	int width, height;
 
 private:
 	SDL_Window* window;
 	SDL_GLContext context;
 
-	int width, height;
-
 	Shader shader;
 	std::vector<Sprite*> sprites;
+	VertexArray verts;
 };
 

@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -47,9 +49,24 @@ bool Renderer::Init(int w, int h) {
 		return false;
 	}
 
+	Vertex vertices[] = { Vertex(-.5, .5, 0., 1., 0., 0., 1., 1., 0.), // top left
+		Vertex(.5, .5, 0., 0., 1., 0., 1., 0., 0.), // top right
+		Vertex(-.5, -.5, .0, 0., 0., 1., 1., 1., 1.), // bottom left
+		Vertex(.5, -.5, .0, 0., 0., 0., 1., 0., 1.) }; // bottom right
+
+	unsigned int indices[]{
+		0, 1, 2,
+		1, 2, 3,
+	};
+
+	if (!verts.Init(vertices, 4, indices, 6, &shader)) {
+		printf("Failed to initialize vertex array when initializing sprite!\n");
+		return false;
+	}
+
 	// TODO: Move to Camera/Game
 	glm::mat4 view = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, -3.f));
-	glm::mat4 proj = glm::ortho(-2.f, 2.f, -1.f, 1.f, -1.f, 100.f);
+	glm::mat4 proj = glm::ortho(-(width/2.f), (width/2.f), -(height/2.f), (height/2.f), -1.f, 100.f);
 
 	shader.UploadMatrix(&view, "view");
 	shader.UploadMatrix(&proj, "proj");
@@ -62,7 +79,10 @@ void Renderer::Draw() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	for (Sprite* sprite : sprites) {
-		sprite->Draw();
+		sprite->UploadUniforms();
+		shader.Activate();
+		verts.Activate();
+		glDrawElements(GL_TRIANGLES, verts.GetIndexCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
 	SDL_GL_SwapWindow(window);
@@ -70,4 +90,12 @@ void Renderer::Draw() {
 
 void Renderer::AddSprite(Sprite* sprite) {
 	sprites.push_back(sprite);
+}
+
+void Renderer::RemoveSprite(Sprite* sprite) {
+	auto it = std::find(sprites.begin(), sprites.end(), sprite);
+	if (it != sprites.end()) {
+		printf("Removed sprite!\n");
+		sprites.erase(it);
+	}
 }

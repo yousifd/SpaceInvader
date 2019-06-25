@@ -10,8 +10,9 @@ public:
 	bool Init(const char* filename);
 	void Activate();
 
+	int width, height, nrChannels;
+
 private:
 	GLuint tex;
-	int width, height, nrChannels;
 };
 

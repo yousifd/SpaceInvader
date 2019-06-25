@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Texture.h"
-#include "VertexArray.h"
 #include "Shader.h"
 #include "Actor.h"
 
@@ -11,11 +10,11 @@ public:
 	~Sprite();
 
 	bool Init(const char* filename, Shader* _shader, Actor* _owner);
-	void Draw();
+	void UploadUniforms();
+
+	Texture tex;
 
 private:
-	Texture tex;
-	VertexArray verts;
 	Shader* shader;
 	Actor* owner;
 };

@@ -88,7 +88,7 @@ std::string Shader::ReadFile(const char* filename) {
 	std::ifstream file(filename);
 	ss << file.rdbuf();
 
-	printf("Shader %s:\n%s\n", filename, ss.str().c_str());
+	//printf("Shader %s:\n%s\n", filename, ss.str().c_str());
 
 	file.close();
 	return ss.str();

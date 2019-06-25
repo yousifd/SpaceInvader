@@ -1,9 +1,12 @@
+#include <algorithm>
+
 #include "Game.h"
 
 Game::Game() {
 }
 
 Game::~Game() {
+	missiles.clear();
 	SDL_Quit();
 }
 
@@ -17,17 +20,12 @@ bool Game::Init() {
 		return false;
 	}
 
-	if (!player.Init(&renderer.GetShader())) {
+	if (!player.Init(this, &renderer.GetShader())) {
 		printf("Failed to initialize player!\n");
 		return false;
 	}
 
-	// TODO: Move this into sprite.Init()
-	renderer.AddSprite(&player.GetSprite());
-
-	// TODO: Shooting Missiles
 	// TODO: Enemies
-	// TODO: Boundary Detection
 	// TODO: Collision Detection
 	// TODO: Sound
 	// TODO: Particle Effects
@@ -58,11 +56,30 @@ void Game::Run() {
 		}
 
 		player.Update(delta);
+		for (Missile* missile : missiles) {
+			if (missile) {
+				missile->Update(delta);
+			}
+		}
 		renderer.Draw();
 
 		delta = (SDL_GetTicks() - prevTime) / 1000.f;
 		prevTime = SDL_GetTicks();
 	}
+}
+
+void Game::AddMissile(Missile* missile) {
+	missiles.push_back(missile);
+}
+
+void Game::RemoveMissile(Missile* missile) {
+	auto it = std::find(missiles.begin(), missiles.end(), missile);
+	if (it != missiles.end()) {
+		printf("Removed Missile!");
+		missiles.erase(it);
+	}
+	renderer.RemoveSprite(&missile->sprite);
+	delete missile;
 }
 
 void Game::HandleKeyDown(SDL_KeyboardEvent event) {
