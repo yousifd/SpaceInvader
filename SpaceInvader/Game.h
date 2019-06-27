@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "Player.h"
 #include "Missile.h"
+#include "Enemy.h"
 
 class Game {
 public:
@@ -27,4 +28,5 @@ private:
 	Player player;
 
 	std::vector<Missile*> missiles;
+	std::vector<Enemy*> enemies;
 };

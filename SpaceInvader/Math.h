@@ -1,5 +1,7 @@
 #pragma once
 
+constexpr float PI = 3.14159265359f;
+
 struct Vector4 {
 	float x, y, z, w;
 
@@ -15,6 +17,10 @@ struct Vector4 {
 		y = _y;
 		z = _z;
 		w = _w;
+	}
+
+	Vector4 operator* (const float other) {
+		return Vector4(x * other, y * other, z * other, w * other);
 	}
 
 	// TODO: Vector4
@@ -35,6 +41,10 @@ struct Vector3 {
 		z = _z;
 	}
 
+	Vector3 operator* (const float other) {
+		return Vector3(x * other, y * other, z * other);
+	}
+
 	// TODO: Vector3
 };
 
@@ -49,6 +59,10 @@ struct Vector2 {
 	Vector2(float _x, float _y) {
 		x = _x;
 		y = _y;
+	}
+
+	Vector2 operator* (const float other) {
+		return Vector2(x * other, y * other);
 	}
 
 	// TODO: Vector2

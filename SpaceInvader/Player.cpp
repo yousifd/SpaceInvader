@@ -23,6 +23,7 @@ bool Player::Init(Game* _game, Shader* _shader) {
 	}
 
 	// TODO: Bound to edge of sprite instead of middle
+	// TODO: Move this to collision detection?
 	//printf("Before:\nxMin: %f\nxMax: %f\nyMin: %f\nyMax: %f\n", xMin, xMax, yMin, yMax);
 
 	//xMin += (sprite.tex.width / 2.f);

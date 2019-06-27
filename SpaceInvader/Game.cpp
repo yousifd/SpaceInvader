@@ -1,12 +1,16 @@
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
 
 #include "Game.h"
 
 Game::Game() {
+	srand(time(NULL));
 }
 
 Game::~Game() {
 	missiles.clear();
+	enemies.clear();
 	SDL_Quit();
 }
 
@@ -25,7 +29,7 @@ bool Game::Init() {
 		return false;
 	}
 
-	// TODO: Enemies
+	// TODO: Set Variables in a txt file and update values based on it (hot reloading)
 	// TODO: Collision Detection
 	// TODO: Sound
 	// TODO: Particle Effects
@@ -38,6 +42,7 @@ void Game::Run() {
 	bool running = true;
 	float delta = 0;
 	unsigned int prevTime = SDL_GetTicks();
+	float spawnTimer = 0.f;
 
 	while (running) {
 		SDL_Event event;
@@ -55,14 +60,27 @@ void Game::Run() {
 			}
 		}
 
+		if (spawnTimer > 2.5f) {
+			spawnTimer = 0.f;
+			Enemy* enemy = new Enemy();
+			enemy->Init(this, &renderer.GetShader());
+			enemies.push_back(enemy);
+		}
+
 		player.Update(delta);
 		for (Missile* missile : missiles) {
 			if (missile) {
 				missile->Update(delta);
 			}
 		}
+		for (Enemy* enemy : enemies) {
+			if (enemy) {
+				enemy->Update(delta);
+			}
+		}
 		renderer.Draw();
 
+		spawnTimer += delta;
 		delta = (SDL_GetTicks() - prevTime) / 1000.f;
 		prevTime = SDL_GetTicks();
 	}
