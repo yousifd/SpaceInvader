@@ -1,0 +1,19 @@
+#Game
+spawn_rate = 2.5
+
+#Player
+filename = ship.png
+speed = 300
+scale = 75
+fire_wait_time = 1
+
+#Missile
+filename = missile.png
+speed = 200
+scale_x = 25
+scale_y = 40
+
+#Enemy
+filename = ship.png
+speed = 100
+scale = 75

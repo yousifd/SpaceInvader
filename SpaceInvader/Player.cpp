@@ -10,14 +10,21 @@ Player::Player() {
 Player::~Player() {
 }
 
-bool Player::Init(Game* _game, Shader* _shader) {
+bool Player::Init(Game* _game) {
 	if (!Actor::Init(_game)) {
 		printf("Failed to initialize Player's actor class!\n");
 		return false;
 	}
 
-	shader = _shader;
-	if (!sprite.Init("ship.png", shader, this)) {
+	speed = std::stof(game->GetVariable("Player", "speed"));
+	scale = std::stof(game->GetVariable("Player", "scale"));
+	fire_wait_time = std::stof(game->GetVariable("Player", "fire_wait_time"));
+	filename = game->GetVariable("Player", "filename");
+
+	//game->vars.AddCallback("Player", &this->VariableUpdateCallback);
+	//game->vars.BindPlayerCallback(&Player::VariableUpdateCallback);
+
+	if (!sprite.Init(filename.c_str(), this)) {
 		printf("Failed to initialize Player's sprite!\n");
 		return false;
 	}
@@ -36,6 +43,8 @@ bool Player::Init(Game* _game, Shader* _shader) {
 	SetPosition(Vector3(0.f, yMin + 50.f, 0.f));
 	SetScale(Vector3(scale, scale, 0.f));
 
+	fire_timer = fire_wait_time;
+
 	return true;
 }
 
@@ -45,6 +54,28 @@ void Player::Update(float delta) {
 	SetPosition(Vector3(tmp.x, tmp.y, tmp.z));
 
 	fire_timer += delta;
+}
+
+void Player::VariableUpdateCallback(std::map<std::string, std::string> kvs) {
+	for (auto& kv : kvs) {
+		std::string key = kv.first;
+		if (key == "filename") {
+			// new sprite
+		}
+		else if (key == "speed") {
+			float _speed = std::stof(kv.second);
+			speed = speed != _speed ? _speed : speed;
+		} else if (key == "scale") {
+			float _scale = std::stof(kv.second);
+			if (scale != _scale) {
+				scale = _scale;
+				SetScale(Vector3(scale, scale, 0.f));
+			}
+		} else if (key == "fire_wait_time") {
+			float _fire_wait_time = std::stof(kv.second);
+			fire_wait_time = fire_wait_time != _fire_wait_time ? _fire_wait_time : fire_wait_time;
+		}
+	}
 }
 
 void Player::HandleKeyDown(SDL_KeyboardEvent event) {
@@ -66,7 +97,7 @@ void Player::HandleKeyDown(SDL_KeyboardEvent event) {
 			fire_timer = 0.f;
 			is_pressed[2] = true;
 			Missile* missile = new Missile();
-			missile->Init(game, this, shader);
+			missile->Init(game, this);
 			game->AddMissile(missile);
 		}
 		break;

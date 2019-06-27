@@ -8,8 +8,7 @@ Sprite::Sprite() {
 Sprite::~Sprite() {
 }
 
-bool Sprite::Init(const char* filename, Shader* _shader, Actor* _owner) {
-	shader = _shader;
+bool Sprite::Init(const char* filename, Actor* _owner) {
 	owner = _owner;
 
 	if (!tex.Init(filename)) {
@@ -22,7 +21,7 @@ bool Sprite::Init(const char* filename, Shader* _shader, Actor* _owner) {
 	return true;
 }
 
-void Sprite::UploadUniforms() {
+void Sprite::UploadUniforms(Shader* shader) {
 	shader->UploadMatrix(&owner->GetModel(), "model");
 	shader->UploadTexture(&tex, "tex", GL_TEXTURE0);
 }

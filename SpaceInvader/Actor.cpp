@@ -7,12 +7,12 @@ Actor::Actor() {
 }
 
 Actor::~Actor() {
-	printf("Actor with ID %d destroyed!\n", id);
+	//printf("Actor with ID %d destroyed!\n", id);
 }
 
 bool Actor::Init(Game* _game) {
 	id = count++;
-	printf("ID: %d\n", id);
+	//printf("ID: %d\n", id);
 	game = _game;
 	xMin = -game->GetRenderer()->width / 2.f;
 	xMax = game->GetRenderer()->width / 2.f;

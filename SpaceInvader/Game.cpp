@@ -5,7 +5,6 @@
 #include "Game.h"
 
 Game::Game() {
-	srand(time(NULL));
 }
 
 Game::~Game() {
@@ -17,6 +16,10 @@ Game::~Game() {
 bool Game::Init() {
 	constexpr int w = 1280, h = 720;
 
+	srand((unsigned int)time(NULL));
+
+	vars.Init("vars.txt");
+
 	SDL_Init(NULL);
 
 	if (!renderer.Init(w, h)) {
@@ -24,12 +27,11 @@ bool Game::Init() {
 		return false;
 	}
 
-	if (!player.Init(this, &renderer.GetShader())) {
+	if (!player.Init(this)) {
 		printf("Failed to initialize player!\n");
 		return false;
 	}
 
-	// TODO: Set Variables in a txt file and update values based on it (hot reloading)
 	// TODO: Collision Detection
 	// TODO: Sound
 	// TODO: Particle Effects
@@ -60,10 +62,10 @@ void Game::Run() {
 			}
 		}
 
-		if (spawnTimer > 2.5f) {
+		if (spawnTimer > std::stof(GetVariable("Game", "spawn_rate"))) {
 			spawnTimer = 0.f;
 			Enemy* enemy = new Enemy();
-			enemy->Init(this, &renderer.GetShader());
+			enemy->Init(this);
 			enemies.push_back(enemy);
 		}
 
@@ -91,9 +93,11 @@ void Game::AddMissile(Missile* missile) {
 }
 
 void Game::RemoveMissile(Missile* missile) {
+	// TODO: Instead of removing the missile while it is updating
+	//	add it to a to_remove list and remove from it every once in a while
+	// TODO: Deactiavte missile actor when it is added to the to_remove list
 	auto it = std::find(missiles.begin(), missiles.end(), missile);
 	if (it != missiles.end()) {
-		printf("Removed Missile!");
 		missiles.erase(it);
 	}
 	renderer.RemoveSprite(&missile->sprite);

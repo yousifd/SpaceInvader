@@ -79,7 +79,7 @@ void Renderer::Draw() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	for (Sprite* sprite : sprites) {
-		sprite->UploadUniforms();
+		sprite->UploadUniforms(&shader);
 		shader.Activate();
 		verts.Activate();
 		glDrawElements(GL_TRIANGLES, verts.GetIndexCount(), GL_UNSIGNED_INT, nullptr);
@@ -95,7 +95,7 @@ void Renderer::AddSprite(Sprite* sprite) {
 void Renderer::RemoveSprite(Sprite* sprite) {
 	auto it = std::find(sprites.begin(), sprites.end(), sprite);
 	if (it != sprites.end()) {
-		printf("Removed sprite!\n");
+		//printf("Removed sprite!\n");
 		sprites.erase(it);
 	}
 }

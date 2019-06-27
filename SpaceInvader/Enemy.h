@@ -9,17 +9,17 @@ public:
 	Enemy();
 	~Enemy();
 
-	bool Init(Game* _game, Shader* _shader);
+	bool Init(Game* _game);
 	void Update(float delta);
 
 	Sprite& GetSprite() { return sprite; };
 
 private:
-	Sprite sprite;
-	float speed = 100.f;
-	float scale = 75.f;
-	float fireTimer = 0.f;
+	float speed;
+	float scale;
+	float fire_timer = 0.f;
 
-	Shader* shader;
+	Sprite sprite;
+	std::string filename;
 };
 

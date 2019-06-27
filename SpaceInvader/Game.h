@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Missile.h"
 #include "Enemy.h"
+#include "VariableManager.h"
 
 class Game {
 public:
@@ -19,6 +20,12 @@ public:
 	void RemoveMissile(Missile* missile);
 
 	Renderer* GetRenderer() { return &renderer; };
+
+	const std::string& GetVariable(std::string qualifier, std::string key) {
+		return vars.vars[qualifier][key];
+	}
+
+	VariableManager vars;
 
 private:
 	void HandleKeyDown(SDL_KeyboardEvent event);

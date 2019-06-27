@@ -11,14 +11,17 @@ Enemy::~Enemy() {
 }
 
 
-bool Enemy::Init(Game* _game, Shader* _shader) {
+bool Enemy::Init(Game* _game) {
 	if (!Actor::Init(_game)) {
 		printf("Failed to initialize Enemy's actor class!\n");
 		return false;
 	}
 
-	shader = _shader;
-	if (!sprite.Init("ship.png", shader, this)) {
+	speed = std::stof(game->GetVariable("Enemy", "speed"));
+	scale = std::stof(game->GetVariable("Enemy", "scale"));
+	filename = game->GetVariable("Enemy", "filename");
+
+	if (!sprite.Init("ship.png", this)) {
 		printf("Failed to initialize Enemy's sprite!\n");
 		return false;
 	}
@@ -44,11 +47,11 @@ void Enemy::Update(float delta) {
 	glm::vec3 tmp = glm::vec3(pos.x, pos.y, pos.z) + (glm::vec3(velocity.x, velocity.y, 0.f) * delta);
 	SetPosition(Vector3(tmp.x, tmp.y, tmp.z));
 
-	fireTimer += delta;
-	if (fireTimer >= 2.5f) {
+	fire_timer += delta;
+	if (fire_timer >= 2.5f) {
 		Missile* missile = new Missile();
-		missile->Init(game, this, shader, true);
+		missile->Init(game, this, true);
 		game->AddMissile(missile);
-		fireTimer = 0.f;
+		fire_timer = 0.f;
 	}
 }
