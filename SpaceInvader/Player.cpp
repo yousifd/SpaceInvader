@@ -60,7 +60,7 @@ void Player::VariableUpdateCallback(std::map<std::string, std::string> kvs) {
 	for (auto& kv : kvs) {
 		std::string key = kv.first;
 		if (key == "filename") {
-			// new sprite
+			// TODO: new sprite
 		}
 		else if (key == "speed") {
 			float _speed = std::stof(kv.second);
@@ -94,8 +94,8 @@ void Player::HandleKeyDown(SDL_KeyboardEvent event) {
 		break;
 	case SDLK_SPACE:
 		if (!is_pressed[2] && fire_timer >= fire_wait_time) {
-			fire_timer = 0.f;
 			is_pressed[2] = true;
+			fire_timer = 0.f;
 			Missile* missile = new Missile();
 			missile->Init(game, this);
 			game->AddMissile(missile);

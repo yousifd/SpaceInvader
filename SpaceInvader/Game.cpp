@@ -32,7 +32,6 @@ bool Game::Init() {
 		return false;
 	}
 
-	// TODO: Collision Detection
 	// TODO: Sound
 	// TODO: Particle Effects
 	// TODO: Camera?
@@ -100,7 +99,6 @@ void Game::RemoveMissile(Missile* missile) {
 	if (it != missiles.end()) {
 		missiles.erase(it);
 	}
-	renderer.RemoveSprite(&missile->sprite);
 	delete missile;
 }
 

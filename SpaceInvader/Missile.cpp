@@ -6,6 +6,7 @@ Missile::Missile() {
 }
 
 Missile::~Missile() {
+	game->GetRenderer()->RemoveSprite(&sprite);
 }
 
 bool Missile::Init(Game* _game, Actor* _actor, bool _is_enemy) {
