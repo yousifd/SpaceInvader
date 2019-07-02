@@ -17,7 +17,6 @@ Vertex::Vertex(float x, float y, float z, float r, float g, float b, float a, fl
 VertexArray::VertexArray() {
 }
 
-
 VertexArray::~VertexArray() {
 	glDeleteBuffers(1, &ebo);
 	glDeleteBuffers(1, &vbo);
@@ -37,18 +36,18 @@ bool VertexArray::Init(Vertex* verts, unsigned int _vertCount, unsigned int* ind
 
 	// Position
 	GLuint posLoc = shader->GetAttribLocation("pos");
-	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 	glEnableVertexAttribArray(posLoc);
+	glVertexAttribPointer(posLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 
 	// Color
 	GLuint colorLoc = shader->GetAttribLocation("color");
-	glVertexAttribPointer(colorLoc, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, color)));
 	glEnableVertexAttribArray(colorLoc);
+	glVertexAttribPointer(colorLoc, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, color)));
 
 	// Texture Coordinates
 	GLuint texCoordsLoc = shader->GetAttribLocation("texCoords");
-	glVertexAttribPointer(texCoordsLoc, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, texCoords)));
 	glEnableVertexAttribArray(texCoordsLoc);
+	glVertexAttribPointer(texCoordsLoc, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(offsetof(Vertex, texCoords)));
 
 	//printf("Pos Location %d\nColor location %d\nTexture Coordinates Location %d\n", posLoc, colorLoc, texCoordsLoc);
 

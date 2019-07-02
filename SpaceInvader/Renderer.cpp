@@ -9,8 +9,8 @@
 Renderer::Renderer() {
 }
 
-
 Renderer::~Renderer() {
+	sprites.clear();
 	SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow(window);
 }
@@ -95,7 +95,6 @@ void Renderer::AddSprite(Sprite* sprite) {
 void Renderer::RemoveSprite(Sprite* sprite) {
 	auto it = std::find(sprites.begin(), sprites.end(), sprite);
 	if (it != sprites.end()) {
-		//printf("Removed sprite!\n");
 		sprites.erase(it);
 	}
 }

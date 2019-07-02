@@ -10,19 +10,19 @@ CollisionManager::~CollisionManager() {
 }
 
 void CollisionManager::Update(float delta) {
-	set.clear();
+	//set.clear();
 
-	for (Collider* a : colliders) {
-		for (Collider* b : colliders) {
-			if (a != b) {
-				if (a->DidCollide(b)) {
-					// TODO: HOW TO DEAL WITH COLLISIONS?
-					set.insert(a);
-					set.insert(b);
-				}
-			}
-		}
-	}
+	//for (Collider* a : colliders) {
+	//	for (Collider* b : colliders) {
+	//		if (a != b) {
+	//			if (a->DidCollide(b)) {
+	//				// TODO: HOW TO DEAL WITH COLLISIONS?
+	//				set.insert(a);
+	//				set.insert(b);
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 Collider* CollisionManager::CreateCollider(float x, float y, float w, float h, Actor* owner) {
@@ -32,7 +32,7 @@ Collider* CollisionManager::CreateCollider(float x, float y, float w, float h, A
 	return collider;
 }
 
-Collider* CollisionManager::RemoveCollider(Collider* collider) {
+void CollisionManager::RemoveCollider(Collider* collider) {
 	auto it = std::find(colliders.begin(), colliders.end(), collider);
 	if (it != colliders.end()) {
 		colliders.erase(it);

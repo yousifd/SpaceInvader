@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 
+#include <windows.h>
+
 #include "Game.h"
 
 Game::Game() {
@@ -18,7 +20,7 @@ bool Game::Init() {
 
 	srand((unsigned int)time(NULL));
 
-	vars.Init("vars.txt");
+	vars.Init("vars\\vars.txt");
 
 	SDL_Init(NULL);
 
@@ -39,11 +41,24 @@ bool Game::Init() {
 	return true;
 }
 
+DWORD WINAPI CheckForChange(LPVOID lpParam) {
+	VariableManager* vars = (VariableManager*)lpParam;
+	vars->CheckForChange();
+
+	return 0;
+}
+
 void Game::Run() {
 	bool running = true;
 	float delta = 0;
 	unsigned int prevTime = SDL_GetTicks();
 	float spawnTimer = 0.f;
+
+	HANDLE h = CreateThread(NULL, 0, CheckForChange, &vars, 0, NULL);
+	if (!h) {
+		printf("Failed to create thread!\n");
+		return;
+	}
 
 	while (running) {
 		SDL_Event event;
@@ -85,6 +100,8 @@ void Game::Run() {
 		delta = (SDL_GetTicks() - prevTime) / 1000.f;
 		prevTime = SDL_GetTicks();
 	}
+
+	CloseHandle(h);
 }
 
 void Game::AddMissile(Missile* missile) {
@@ -94,7 +111,7 @@ void Game::AddMissile(Missile* missile) {
 void Game::RemoveMissile(Missile* missile) {
 	// TODO: Instead of removing the missile while it is updating
 	//	add it to a to_remove list and remove from it every once in a while
-	// TODO: Deactiavte missile actor when it is added to the to_remove list
+	// TODO: Remove missile from update list when it is added to the to_remove list
 	auto it = std::find(missiles.begin(), missiles.end(), missile);
 	if (it != missiles.end()) {
 		missiles.erase(it);

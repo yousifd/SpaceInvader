@@ -16,7 +16,7 @@ struct Collider {
 		owner = _owner;
 	}
 
-	bool DidCollide(const Collider* b) {
+	bool DidCollide(const Collider& b) {
 		return (abs(x - b.x) * 2 < (w + b.w)) &&
 			(abs(y - b.y) * 2 < (h + b.h));
 	}
@@ -33,7 +33,7 @@ public:
 	void Update(float delta);
 
 	Collider* CreateCollider(float x, float y, float w, float h, Actor* owner);
-	Collider* RemoveCollider(Collider* collider);
+	void RemoveCollider(Collider* collider);
 
 private:
 	std::vector<Collider*> colliders;

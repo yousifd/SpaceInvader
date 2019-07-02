@@ -1,3 +1,5 @@
+#include <functional>
+
 #include <glm/glm.hpp>
 
 #include "Player.h"
@@ -17,12 +19,11 @@ bool Player::Init(Game* _game) {
 	}
 
 	speed = std::stof(game->GetVariable("Player", "speed"));
-	scale = std::stof(game->GetVariable("Player", "scale"));
+	scalarScale = std::stof(game->GetVariable("Player", "scale"));
 	fire_wait_time = std::stof(game->GetVariable("Player", "fire_wait_time"));
 	filename = game->GetVariable("Player", "filename");
 
-	//game->vars.AddCallback("Player", &this->VariableUpdateCallback);
-	//game->vars.BindPlayerCallback(&Player::VariableUpdateCallback);
+	game->vars.BindCallback("Player", std::bind(&Player::VariableUpdateCallback, this, std::placeholders::_1));
 
 	if (!sprite.Init(filename.c_str(), this)) {
 		printf("Failed to initialize Player's sprite!\n");
@@ -41,7 +42,7 @@ bool Player::Init(Game* _game) {
 	//printf("After:\nxMin: %f\nxMax: %f\nyMin: %f\nyMax: %f\n", xMin, xMax, yMin, yMax);
 
 	SetPosition(Vector3(0.f, yMin + 50.f, 0.f));
-	SetScale(Vector3(scale, scale, 0.f));
+	SetScale(Vector3(scalarScale, scalarScale, 0.f));
 
 	fire_timer = fire_wait_time;
 
@@ -49,6 +50,14 @@ bool Player::Init(Game* _game) {
 }
 
 void Player::Update(float delta) {
+	if (updateSprite) {
+		updateSprite = false;
+		sprite.~Sprite();
+		if (!sprite.Init(filename.c_str(), this)) {
+			printf("Failed to initialize Player's sprite!\n");
+		}
+	}
+
 	Vector3 pos = GetPosition();
 	glm::vec3 tmp = glm::vec3(pos.x, pos.y, pos.z) + (glm::vec3(velocity.x, velocity.y, 0.f) * delta);
 	SetPosition(Vector3(tmp.x, tmp.y, tmp.z));
@@ -56,24 +65,22 @@ void Player::Update(float delta) {
 	fire_timer += delta;
 }
 
-void Player::VariableUpdateCallback(std::map<std::string, std::string> kvs) {
+void Player::VariableUpdateCallback(const std::map<std::string, std::string>& kvs) {
 	for (auto& kv : kvs) {
 		std::string key = kv.first;
 		if (key == "filename") {
-			// TODO: new sprite
+			// Can only update openGL stuff in the main thread :(
+			filename = kv.second;
+			updateSprite = true;
 		}
 		else if (key == "speed") {
-			float _speed = std::stof(kv.second);
-			speed = speed != _speed ? _speed : speed;
+			float speed = std::stof(kv.second);
 		} else if (key == "scale") {
 			float _scale = std::stof(kv.second);
-			if (scale != _scale) {
-				scale = _scale;
-				SetScale(Vector3(scale, scale, 0.f));
-			}
+			SetScale(Vector3(_scale, _scale, 0.f));
+			scalarScale = _scale;
 		} else if (key == "fire_wait_time") {
-			float _fire_wait_time = std::stof(kv.second);
-			fire_wait_time = fire_wait_time != _fire_wait_time ? _fire_wait_time : fire_wait_time;
+			fire_wait_time = std::stof(kv.second);
 		}
 	}
 }

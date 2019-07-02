@@ -1,14 +1,19 @@
 #pragma once;
 
-#include "Player.h"
-
 #include <fstream>
 #include <stdexcept>
 #include <string>
 #include <map>
+#include <functional>
 
-//typedef void(*callback)(std::map<std::string, std::string>);
-typedef void(Player::*PlayerCallback)(std::map<std::string, std::string>);
+#if _WIN32
+#include <windows.h>
+#include <fileapi.h>
+#endif
+
+#include "Player.h"
+
+typedef void(Callback)(const std::map<std::string, std::string>&);
 
 class VariableManager {
 public:
@@ -16,10 +21,15 @@ public:
 	~VariableManager();
 
 	bool Init(const char* filename);
-	//void BindPlayerCallback(PlayerCallback call);
-	//void AddCallback(std::string qualifier, callback call);
+	void CheckForChange();
+	void BindCallback(std::string qualifier, std::function<Callback> callback);
 	void Print();
 
 	std::map<std::string, std::map<std::string, std::string>> vars;
-	PlayerCallback playercallback;
+	std::map<std::string, std::function<Callback>> callbacks;
+
+	HANDLE h;
+
+private:
+	const char* filename;
 };

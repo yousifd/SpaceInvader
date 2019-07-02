@@ -101,9 +101,10 @@ bool Shader::ShaderStatus(GLuint shader) {
 		char infoLog[512];
 		glGetShaderInfoLog(shader, 512, NULL, infoLog);
 		printf("Failed to compile shader (%d): %s\n", shader, infoLog);
+		return false;
 	}
 
-	return success;
+	return true;
 }
 
 bool Shader::ProgramStatus(GLuint prog) {
@@ -113,7 +114,8 @@ bool Shader::ProgramStatus(GLuint prog) {
 		char infoLog[512];
 		glGetProgramInfoLog(prog, 512, nullptr, infoLog);
 		printf("Failed to link program (%d): %s\n", prog, infoLog);
+		return false;
 	}
 
-	return success;
+	return true;
 }

@@ -45,6 +45,14 @@ struct Vector3 {
 		return Vector3(x * other, y * other, z * other);
 	}
 
+	bool operator== (const Vector3& other) {
+		return (x == other.x) && (y == other.y) && (z == other.z);
+	}
+
+	bool operator!= (const Vector3& other) {
+		return !(*this == other);
+	}
+
 	// TODO: Vector3
 };
 

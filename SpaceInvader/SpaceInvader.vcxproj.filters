@@ -16,9 +16,6 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{92cc667f-84f0-420e-ae45-cae44e6cb514}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility">
-      <UniqueIdentifier>{d4f30c12-a227-4f11-be2b-823ba95fb031}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -58,6 +55,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,6 +101,9 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vertex.glsl">
@@ -119,7 +122,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="vars.txt">
+    <Text Include="vars\vars.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

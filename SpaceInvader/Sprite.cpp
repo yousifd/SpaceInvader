@@ -1,11 +1,11 @@
 #include "Sprite.h"
-
 #include "Game.h"
 
 Sprite::Sprite() {
 }
 
 Sprite::~Sprite() {
+	owner->GetGame()->GetRenderer()->RemoveSprite(this);
 }
 
 bool Sprite::Init(const char* filename, Actor* _owner) {
