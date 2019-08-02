@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Math.h"
+#include "Object.h"
 
 class Game;
 

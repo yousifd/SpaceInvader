@@ -29,11 +29,18 @@ bool Game::Init() {
 		return false;
 	}
 
+	if (!font.Init(w, h)) {
+
+	}
+
+
 	if (!player.Init(this)) {
 		printf("Failed to initialize player!\n");
 		return false;
 	}
 
+
+	// TODO: Text
 	// TODO: Sound
 	// TODO: Particle Effects
 	// TODO: Camera?
@@ -76,6 +83,11 @@ void Game::Run() {
 			}
 		}
 
+		for (auto* missile : missilesToDelete) {
+			delete missile;
+		}
+		missilesToDelete.clear();
+
 		if (spawnTimer > std::stof(GetVariable("Game", "spawn_rate"))) {
 			spawnTimer = 0.f;
 			Enemy* enemy = new Enemy();
@@ -109,14 +121,11 @@ void Game::AddMissile(Missile* missile) {
 }
 
 void Game::RemoveMissile(Missile* missile) {
-	// TODO: Instead of removing the missile while it is updating
-	//	add it to a to_remove list and remove from it every once in a while
-	// TODO: Remove missile from update list when it is added to the to_remove list
 	auto it = std::find(missiles.begin(), missiles.end(), missile);
 	if (it != missiles.end()) {
 		missiles.erase(it);
 	}
-	delete missile;
+	missilesToDelete.push_back(missile);
 }
 
 void Game::HandleKeyDown(SDL_KeyboardEvent event) {

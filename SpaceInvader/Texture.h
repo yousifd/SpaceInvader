@@ -7,7 +7,8 @@ public:
 	Texture();
 	~Texture();
 
-	bool Init(const char* filename);
+	bool CreateFromFile(const char* filename);
+	void CreateFromBuffer(void* buffer, int _width, int _height);
 	void Activate();
 
 	int width, height, nrChannels;

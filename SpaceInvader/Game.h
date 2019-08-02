@@ -7,6 +7,7 @@
 #include "Missile.h"
 #include "Enemy.h"
 #include "VariableManager.h"
+#include "Font.h"
 
 class Game {
 public:
@@ -33,7 +34,9 @@ private:
 
 	Renderer renderer;
 	Player player;
+	Font font;
 
 	std::vector<Missile*> missiles;
+	std::vector<Missile*> missilesToDelete;
 	std::vector<Enemy*> enemies;
 };

@@ -9,6 +9,7 @@
 
 #include "Sprite.h"
 #include "Missile.h"
+#include "CollisionManager.h"
 
 class Game;
 class Actor;
@@ -30,6 +31,7 @@ public:
 
 private:
 	Sprite sprite;
+	Collider collider;
 	bool is_pressed[3] = { false };
 	float speed;
 	float scalarScale;

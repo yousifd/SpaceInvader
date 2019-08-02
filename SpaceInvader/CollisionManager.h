@@ -2,11 +2,12 @@
 
 #include <cmath>
 #include <vector>
-#include <map>
+#include <functional>
 
 #include "Actor.h"
 
-// TODO: Collision Detection
+typedef void(CollisionCallback)(Actor*);
+
 struct Collider {
 	void Init(float _x, float _y, float _w, float _h, Actor* _owner) {
 		x = _x;
@@ -22,6 +23,7 @@ struct Collider {
 	}
 
 	float x, y, w, h;
+	std::function<CollisionCallback> callback;
 	Actor* owner;
 };
 

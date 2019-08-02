@@ -10,19 +10,17 @@ CollisionManager::~CollisionManager() {
 }
 
 void CollisionManager::Update(float delta) {
-	//set.clear();
-
-	//for (Collider* a : colliders) {
-	//	for (Collider* b : colliders) {
-	//		if (a != b) {
-	//			if (a->DidCollide(b)) {
-	//				// TODO: HOW TO DEAL WITH COLLISIONS?
-	//				set.insert(a);
-	//				set.insert(b);
-	//			}
-	//		}
-	//	}
-	//}
+	// TODO: Collision Detection
+	for (Collider* a : colliders) {
+		for (Collider* b : colliders) {
+			if (a != b) {
+				if (a->DidCollide(*b)) {
+					a->callback(b->owner);
+					b->callback(a->owner);
+				}
+			}
+		}
+	}
 }
 
 Collider* CollisionManager::CreateCollider(float x, float y, float w, float h, Actor* owner) {

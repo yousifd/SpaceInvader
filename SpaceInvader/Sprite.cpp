@@ -11,7 +11,7 @@ Sprite::~Sprite() {
 bool Sprite::Init(const char* filename, Actor* _owner) {
 	owner = _owner;
 
-	if (!tex.Init(filename)) {
+	if (!tex.CreateFromFile(filename)) {
 		printf("Failed to initialize texture when initializing sprite!\n;");
 		return false;
 	}
